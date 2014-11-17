@@ -1,15 +1,15 @@
 This is a basic LAMP setup for [Laravel](http://laravel.com) 4 PHP framework using [Vagrant](http://vagrantup.com) and [Puppet](http://puppetlabs.com/).
 
 ## Prerequisites
-This repository provides a Vagrant box (virtual machine or VM) with Linux, Apache 2, MySQL 5.5, and PHP 5.4 (so-called LAMP) for web development, along with the basic Laravel framework.  It requires that you have two other applications already installed.
+This repository provides a Vagrant box (virtual machine or VM) with **L**inux, **A**pache 2, **M**ySQL 5.5, and **P**HP 5.4 (so-called **LAMP**) for web development, along with the basic Laravel framework.  It requires that you have two other applications already installed.
 * [Virtualbox](http://virtualbox.org/) - An application that acts like a computer completely in software.
 * [Vagrant](http://vagrantup.org/) - A system of creating and managing Virtualbox VM instances for development.  (This configuration should run on any version of Vagrant numbered 1.3 or greater.)
 
 Both Virtualbox and Vagrant are open-source (free) and available for the three most common platforms:  Windows, Mac OS X, and Linux.  See their web sites for information about downloading and installing them for your particular platform and configuration.
 
-Also, since Windows does *not* come with a built-in SSH client, you will need to obtain a separate SSH client, such as [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/), which is free/open-source.  To connect to your Vagrant box (once it's running!) from an external SSH client, use these settings:
+Also, since Windows does *not* come with a built-in [SSH](https://en.wikipedia.org/wiki/Secure_Shell) client, you will need to obtain a separate SSH client, such as [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/), which is free/open-source.  To connect to your Vagrant box (once it's running!) from an external SSH client, use these settings:
 * hostname: `localhost`
-* port: `2222`
+* port: `2222`  (By default, Vagrant forwards port 22, the default SSH port, to port 2222 on the host.)
 * username: `vagrant`
 * password: `vagrant`
 
@@ -18,7 +18,7 @@ On Mac OS X and Linux, you can connect to the Vagrant box using the `vagrant ssh
 ## Vagrantfile
 This file contains the basic setup for Vagrant.  This configuration uses the ["precise32" box](https://vagrantcloud.com/hashicorp/boxes/precise32) based on Ubuntu 12.04 LTS.
 
-There are two sections in this file that are important to us.
+There are two sections in this file that are of primary importance to us.
 
 ### Port Forwarding
 The first one is the port fowarding section. It allows us to access our Vagrant box from **outside** the box. For this example, we've opened up two ports: 80 and 3306.
@@ -26,8 +26,8 @@ The first one is the port fowarding section. It allows us to access our Vagrant 
     config.vm.network :forwarded_port, guest: 80, host: 8080
     config.vm.network :forwarded_port, guest: 3306, host: 33060
 
-* **Port 80** is the Apache web server porton the VM (virtual machine), but to access it from outside of Vagrant (i.e., via web browser on the host machine), you will have to use the forwarded port: 8080. Load up a web browser and put in http://127.0.0.1:8080 to interact with the website on the Vagrant box.  [Alternately, you can define an alias, such as **laravel.dev**, for the web server on the Vagrant VM, so that you don't have to use a special port to access the web server.]
-* **Port 3306** is for MySQL on the VM (virtual machine). We forward it to 33060 so we can access the Vagrant MySQL using external MySQL applications, such as [DBeaver](http://dbeaver.jkiss.org/).
+* **Port 80** is the Apache web server porton the VM (virtual machine), but to access it from outside of Vagrant (i.e., via web browser on the host machine), you will have to use the forwarded port: **8080**. Load up a web browser and put in http://127.0.0.1:8080 to interact with the website on the Vagrant box.  [Alternately, you can define an alias, such as **laravel.dev**, for the web server on the Vagrant VM, so that you don't have to use a special port to access the web server.]
+* **Port 3306** is for MySQL on the VM (virtual machine). We forward it to **33060** so we can access the Vagrant MySQL instance using external MySQL applications (i.e., on the host machine), such as [DBeaver](http://dbeaver.jkiss.org/).
 
 ### Puppet
 The second section we care about in the Vagrantfile is the Puppet configuration. Puppet allows us to automatically provision our Vagrant box with different packages and configurations for Apache, MySQL, PHP, etc.
