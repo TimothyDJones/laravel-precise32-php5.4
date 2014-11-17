@@ -4,6 +4,7 @@ This is a basic LAMP setup for [Laravel](http://laravel.com) 4 PHP framework usi
 This repository provides a Vagrant box (virtual machine or VM) with Linux, Apache 2, MySQL 5.5, and PHP 5.4 (so-called LAMP) for web development, along with the basic Laravel framework.  It requires that you have two other applications already installed.
 * [Virtualbox](http://virtualbox.org/) - An application that acts like a computer completely in software.
 * [Vagrant](http://vagrantup.org/) - A system of creating and managing Virtualbox VM instances for development.  (This configuration should run on any version of Vagrant numbered 1.3 or greater.)
+
 Both Virtualbox and Vagrant are open-source (free) and available for the three most common platforms:  Windows, Mac OS X, and Linux.  See their web sites for information about downloading and installing them for your particular platform and configuration.
 
 Also, since Windows does *not* come with a built-in SSH client, you will need to obtain a separate SSH client, such as [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/), which is free/open-source.  To connect to your Vagrant box (once it's running!) from an external SSH client, use these settings:
