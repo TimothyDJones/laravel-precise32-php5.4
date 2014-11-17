@@ -1,7 +1,7 @@
 This is a basic LAMP setup for [Laravel](http://laravel.com) 4 PHP framework using [Vagrant](http://vagrantup.com) and [Puppet](http://puppetlabs.com/).
 
 ## Prerequisites
-This repository provides a Vagrant box (virtual machine or VM) with **L**inux, **A**pache 2, **M**ySQL 5.5, and **P**HP 5.4 (so-called **LAMP**) for web development, along with the basic Laravel framework.  It requires that you have two other applications already installed.
+This repository provides a Vagrant box (virtual machine or VM) with Linux, Apache 2, MySQL 5.5, and PHP 5.4 (so-called **LAMP**) for web development, along with the basic Laravel framework.  It requires that you have two other applications already installed.
 * [Virtualbox](http://virtualbox.org/) - An application that acts like a computer completely in software.
 * [Vagrant](http://vagrantup.org/) - A system of creating and managing Virtualbox VM instances for development.  (This configuration should run on any version of Vagrant numbered 1.3 or greater.)
 
