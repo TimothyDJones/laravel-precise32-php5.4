@@ -26,11 +26,16 @@ The first one is the port fowarding section. It allows us to access our Vagrant 
     config.vm.network :forwarded_port, guest: 80, host: 8080
     config.vm.network :forwarded_port, guest: 3306, host: 33060
 
-* **Port 80** is the Apache web server porton the VM (virtual machine), but to access it from outside of Vagrant (i.e., via web browser on the host machine), you will have to use the forwarded port: **8080**. Load up a web browser and put in http://127.0.0.1:8080 to interact with the website on the Vagrant box.  [Alternately, you can define an alias, such as **laravel.dev**, for the web server on the Vagrant VM, so that you don't have to use a special port to access the web server.]
+* **Port 80** is the Apache web server porton the VM (virtual machine), but to access it from outside of Vagrant (i.e., via web browser on the host machine), you will have to use the forwarded port: **8080**. Load up a web browser and put in http://127.0.0.1:8080/ (or http://localhost:8080/) to interact with the website on the Vagrant box.  [Alternately, you can define an alias, such as **laravel.dev**, for the web server on the Vagrant VM, so that you don't have to use a special port to access the web server.]
 * **Port 3306** is for MySQL on the VM (virtual machine). We forward it to **33060** so we can access the Vagrant MySQL instance using external MySQL applications (i.e., on the host machine), such as [DBeaver](http://dbeaver.jkiss.org/).
 
+### Synced (Shared) Folders
+The next section synced (previously called 'shared') folders section.  As you are probably recall, [the Laravel `apps/storage` folder must have full read-write permissions](http://laravel.com/docs/installation#configuration) so that the application can save files, such as logs, session cookies, etc.  Likewise, the Laravel `public` folder must be owned by the account that the Apache web server runs under, which is `www-data`	in Ubuntu.
+
+Thus, we have three entries in the synced folder sections to enable the appropriate permissions.  The "base" setting is to synchronize between the directory (folder) where `Vagrantfile` is located.  This includes all of the sub-directories.  In addition, the other two sections set the permissions of the "special" directories for Laravel to function properly.
+
 ### Puppet
-The second section we care about in the Vagrantfile is the Puppet configuration. Puppet allows us to automatically provision our Vagrant box with different packages and configurations for Apache, MySQL, PHP, etc.
+The final section we care about in the Vagrantfile is the Puppet configuration. Puppet allows us to automatically provision our Vagrant box with different packages and configurations for Apache, MySQL, PHP, etc.
 
 This section tells Vagrant that the Puppet configuration file is called `default.pp` and can be found in `/puppet/manifests` folder.
 
@@ -95,6 +100,11 @@ In the case of MySQL, Puppet also has to run a shell command to ensure there is 
 The final portions of the Puppet provisioning configuration installs Composer and Laravel framework itself.  Laravel is installed on the Vagrant box to the `/vagrant/laravel` directory, which is automatically synced with the `laravel` folder in the Vagrant box folder of the host machine.  This allows you to edit your Laravel-based web site using the files in the `laravel`.
 
 For more information on Puppet, check out their documentation at http://docs.puppetlabs.com/.
+
+### Checking the Installation
+After you have launched the Vagrant box by running `vagrant up`, you can check that the box is working by opening http://localhost:8080/ on the **host** machine.  The standard Laravel "You have arrived." page should be displayed.  Congratulations!
+
+For reference, this means that the Laravel `public` folder corresponds to the root or ("home") directory for the Apache web server on the Vagrant box.  Thus, all Laravel URLs are based on this URL.
 
 ### To Do
 The following additional features are planned:
