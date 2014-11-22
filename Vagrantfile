@@ -33,10 +33,21 @@ Vagrant.configure("2") do |config|
 	# the path on the guest to mount the folder. And the optional third
 	# argument is a set of non-required options.
 	# config.vm.synced_folder "../data", "/vagrant_data"
-	config.vm.synced_folder "./", "/vagrant",
+	config.vm.synced_folder "./", "/vagrant", 
+	#	id: "vagrant-root",
 		owner: "vagrant",
+		group: "vagrant",
+		mount_options: ["dmode=775,fmode=664"]
+	config.vm.synced_folder "./laravel/app/storage", "/vagrant/laravel/app/storage", 
+	#	id="laravel-storage",
+		owner: "www-data",
 		group: "www-data",
-		mount_options: ["dmode=775,fmode=775"]
+		mount_options: ["dmode=777,fmode=664"]
+	config.vm.synced_folder "./laravel/public", "/vagrant/laravel/public",
+	#	id: "laravel-public",
+		owner: "www-data",
+		group: "www-data",
+		mount_options: ["dmode=775,fmode=664"]
 	#config.vm.synced_folder "laravel/", "/var/www/laravel",
 	#	owner: "www-data",
 	#	group: "www-data",
