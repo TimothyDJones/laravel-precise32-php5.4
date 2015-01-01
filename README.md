@@ -70,7 +70,7 @@ There are a few things going on in here, first of which is the package listings.
 
 ### Configuration File Management
 After these packages are installed, we need to ensure the configurations are consistent and usable. Using the `file` parameter, we can tell Puppet to ensure that our MySQL and Apache configuration files are always the same as the local versions of those files. In this case `puppet/files/mysql/my.cnf` and `puppet/files/apache/default` respectively.
-
+```puppet
     file { "/etc/mysql/my.cnf":
         notify => Service["mysql"],
         mode => 644,
@@ -79,27 +79,79 @@ After these packages are installed, we need to ensure the configurations are con
         require => Package["mysql-server"],
         source => "/vagrant/puppet/files/mysql/my.cnf"
     }
+```
 
 ### Process Management
 Puppet also ensures that Apache and MySQL are always running, using the `exec` parameter:
-
+```puppet
     service { "mysql":
         ensure => running, 
         require => Package["mysql-server"]
     }
+```
 
 ### MySQL User Provisioning
 In the case of MySQL, Puppet also has to run a shell command to ensure there is a root user with no password that can be accessed from **outside** Vagrant (in the case of DBeaver, or other MySQL clients).
-
+```puppet
     exec { "create-db-schema-and-user":
         command => "/usr/bin/mysql -uroot -e \"CREATE DATABASE IF NOT EXISTS laravel; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;\"",
         require => Service["mysql"]
     }
+```
 
 ### Laravel Provisioning
 The final portions of the Puppet provisioning configuration installs Composer and Laravel framework itself.  Laravel is installed on the Vagrant box to the `/vagrant/laravel` directory, which is automatically synced with the `laravel` folder in the Vagrant box folder of the host machine.  This allows you to edit your Laravel-based web site using the files in the `laravel`.
 
 For more information on Puppet, check out their documentation at http://docs.puppetlabs.com/.
+
+### XDebug Configuration
+The Vagrant configuration includes [XDebug](http://xdebug.org/), the *de facto* debugging standard for PHP.  Configuring [remote debugging using XDebug](http://xdebug.org/docs/remote) can be a little tricky, so here are some basic instructions on getting it going.  Basically, there are two steps in the process:  configuration on the Vagrant box and configuration on the host machine and the IDE on the host machine.
+
+#### Vagrant Box Configuration
+As noted above, this Vagrant box configuration includes XDebug installation. You can confirm that XDebug is enabled for PHP, by creating a simple PHP script named `phpinfo.php` in the `/vagrant/laravel` directory with the following:
+```php
+<?php
+	echo phpinfo();
+?>
+```
+Open this file in your web browser on the **host** machine by navigating to (http://localhost:8080/phpinfo.php).  You should see a section toward the bottom of the page that has **xdebug** heading that indicates XDebug is enabled and the details of the default configuration.  
+
+When XDebug is installed during the provisioning of the Vagrant box (the first time that you run `vagrant up`), an XDebug configuration file will be created on the Vagrant box in `/etc/php5/apache2/conf.d/20-xdebug.ini`. (At the top of the `phpinfo.php` page noted above, the **Additional .ini files parsed** should include `/etc/php5/apache2/conf.d/20-xdebug.ini`.) By default, this file will be empty, since it is configured for *local* debugging.  Open this file for editing by running `sudo vi /etc/php5/apache2/conf.d/20-xdebug.ini` and add these lines to the file.
+```ini
+zend_extension=/usr/lib/php5/20100525+lfs/xdebug.so
+xdebug.default_enable=1
+xdebug.remote_enable=1
+xdebug.remote_handler=dbgp
+xdebug.remote_host=192.168.33.1
+xdebug.remote_port=9000
+xdebug.remote_autostart=0
+xdebug.remote_log=/tmp/php5-xdebug.log
+```
+
+Most of these lines should be self-explanatory (or you can check the [XDebug **basic** documentation](http://xdebug.org/docs/basic) for details!).  However, a couple of specific notes are in order.
+* **`xdebug.remote_host`** - This is the IP address of the **host** with respect to the Vagrant box.  In our `Vagrantfile`, we specify that the Vagrant box has IP address **192.168.33.10** via this line:
+```
+config.vm.network :private_network, ip: "192.168.33.10"
+```
+You can find the IP address (range!) for the **host** (again, with respect to the Vagrant box) by running `netstat -rn` on the Vagrant box (i.e., after running `vagrant ssh` to connect to Vagrant box from the host).  You should see something like:
+```
+vagrant@development:/etc/php5/apache2/conf.d$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         10.0.2.2        0.0.0.0         UG        0 0          0 eth0
+0.0.0.0         10.0.2.2        0.0.0.0         UG        0 0          0 eth0
+10.0.2.0        0.0.0.0         255.255.255.0   U         0 0          0 eth0
+192.168.33.0    0.0.0.0         255.255.255.0   U         0 0          0 eth1
+```
+The last line (`eth1`) is the one we are interested in and it shows that the `localhost` gateway (0.0.0.0) is routed to 192.168.33.0, so we can use any IP address (except 192.168.33.**10**!) in this subnet, so let's choose the lowest one:  192.168.33.**1**.
+* **`xdebug.remote_log`** - This specifies that the XDebug logging will be done on the **host** machine in `/tmp/php5-xdebug.log`, which allows us to easily check the log file if we run into any problems.
+
+#### Host Machine and IDE/Editor Configuration
+Now that we have everything set up for remote debugging on the Vagrant box (Remember that we are thinking of the Vagrant box as being a "remote" server with respect to the **host** machine where we do our development work.), we can set up our development environment on the **host**.  Much of this work is specific to your IDE or editor that you use.  Let's look at how to do this for [Aptana Studio](http://www.aptana.org) (the same process applies to [Eclipse](http://www.eclipse.org/), since Aptana is based on Eclipse) and [Netbeans](http://www.netbeans.org).
+
+##### Aptana Studio
+
+##### Netbeans
 
 ### Checking the Installation
 After you have launched the Vagrant box by running `vagrant up`, you can check that the box is working by opening http://localhost:8080/ on the **host** machine.  The standard Laravel "You have arrived." page should be displayed.  Congratulations!
