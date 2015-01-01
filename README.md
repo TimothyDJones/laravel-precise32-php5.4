@@ -22,10 +22,10 @@ There are two sections in this file that are of primary importance to us.
 
 ### Port Forwarding
 The first one is the port fowarding section. It allows us to access our Vagrant box from **outside** the box. For this example, we've opened up two ports: 80 and 3306.
-
+```ruby
     config.vm.network :forwarded_port, guest: 80, host: 8080
     config.vm.network :forwarded_port, guest: 3306, host: 33060
-
+```
 * **Port 80** is the Apache web server porton the VM (virtual machine), but to access it from outside of Vagrant (i.e., via web browser on the host machine), you will have to use the forwarded port: **8080**. Load up a web browser and put in http://127.0.0.1:8080/ (or http://localhost:8080/) to interact with the website on the Vagrant box.  [Alternately, you can define an alias, such as **laravel.dev**, for the web server on the Vagrant VM, so that you don't have to use a special port to access the web server.]
 * **Port 3306** is for MySQL on the VM (virtual machine). We forward it to **33060** so we can access the Vagrant MySQL instance using external MySQL applications (i.e., on the host machine), such as [DBeaver](http://dbeaver.jkiss.org/).
 
@@ -38,12 +38,12 @@ Thus, we have three entries in the synced folder sections to enable the appropri
 The final section we care about in the Vagrantfile is the Puppet configuration. Puppet allows us to automatically provision our Vagrant box with different packages and configurations for Apache, MySQL, PHP, etc.
 
 This section tells Vagrant that the Puppet configuration file is called `default.pp` and can be found in `/puppet/manifests` folder.
-
+```ruby
     config.vm.provision :puppet do |puppet|
         puppet.manifests_path = "puppet/manifests"
         puppet.manifest_file  = "default.pp"
     end
-
+```
 For a more complete description how the Vagrantfile works or to customize your box, go to http://docs.vagrantup.com/v2/getting-started/index.html.
 
 ## puppet/manifests/default.pp
@@ -130,7 +130,7 @@ xdebug.remote_log=/tmp/php5-xdebug.log
 
 Most of these lines should be self-explanatory (or you can check the [XDebug **basic** documentation](http://xdebug.org/docs/basic) for details!).  However, a couple of specific notes are in order.
 * **`xdebug.remote_host`** - This is the IP address of the **host** with respect to the Vagrant box.  In our `Vagrantfile`, we specify that the Vagrant box has IP address **192.168.33.10** via this line:
-```
+```ruby
 config.vm.network :private_network, ip: "192.168.33.10"
 ```
 You can find the IP address (range!) for the **host** (again, with respect to the Vagrant box) by running `netstat -rn` on the Vagrant box (i.e., after running `vagrant ssh` to connect to Vagrant box from the host).  You should see something like:
