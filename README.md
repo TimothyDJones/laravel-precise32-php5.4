@@ -153,6 +153,10 @@ Now that we have everything set up for remote debugging on the Vagrant box (Reme
 
 ##### Netbeans
 
+##### Other IDEs and Editors
+Here are some good references for using XDebug for remote debugging on your Vagrant box with other popular IDEs and Editors.
+* [How to configure Xdebug in PHP Storm through Vagrant](https://danemacmillan.com/how-to-configure-xdebug-in-phpstorm-through-vagrant/)
+
 ### Checking the Installation
 After you have launched the Vagrant box by running `vagrant up`, you can check that the box is working by opening http://localhost:8080/ on the **host** machine.  The standard Laravel "You have arrived." page should be displayed.  Congratulations!
 
