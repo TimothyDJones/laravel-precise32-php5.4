@@ -56,7 +56,13 @@
             .fa-icon-color-red {
                 color: red;
             }
+            #phpinfoModal .modal-dialog {
+                width: 80%;
+            }
         </style>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div id="wrap">
@@ -73,7 +79,14 @@
                 <h3>Basic Configuration Information</h3>                
                 <div class="row">
                     <div class="col-md-4">PHP Version</div>
-                    <div class="col-md-8"><?php echo phpversion(); ?></div>
+                    <div class="col-md-8">
+                        <?php echo phpversion(); ?>&nbsp;
+                        <a href="#" class="btn btn-sm btn-success"
+                           data-toggle="modal"
+                           data-target="#phpinfoModal">
+                            More Info
+                        </a>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">MySQL Version</div>
@@ -110,10 +123,27 @@
                 </div>
             </div>
         </div>
-                <div id="footer" class="footer">
-                    <div class="container">
-                        <p class="muted pull-right"><strong><a href="https://github.com/TimothyDJones/laravel-precise32-php5.4">Laravel Vagrant LAMP Box</a></strong></p>
+        <div id="footer" class="footer">
+            <div class="container">
+                <p class="muted pull-right"><strong><a href="https://github.com/TimothyDJones/laravel-precise32-php5.4">Laravel Vagrant LAMP Box</a></strong></p>
+            </div>
+
+        </div>
+        <div class="modal fade" id="phpinfoModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Detailed PHP Information</h4>
                     </div>
-                    
-                </div>        
+                    <div class="modal-body">
+                        <?php echo phpinfo(INFO_GENERAL); ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </body>
