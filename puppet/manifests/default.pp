@@ -49,7 +49,7 @@ class init {
 	}
 
 	exec { "create-db-schema-and-user":
-		command => "/usr/bin/mysql -uroot -e \"CREATE DATABASE IF NOT EXISTS laravel; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;\"",
+		command => "/usr/bin/mysql -u root -e \"CREATE DATABASE IF NOT EXISTS laravel; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;\"",
 		require => Service["mysql"]
 	}
 
@@ -72,10 +72,20 @@ class init {
 	}
 	
 #	exec { "laravel-packages":
-#		command => 'chdir /vagrant/laravel ; composer require "way/generators":"3.*" --prefer-dist --no-update ; composer require "laravelbook/ardent":"2.*" --prefer-dist --no-update ; composer require "aws/aws-sdk-php-laravel":"1.*@dev" --prefer-dist --no-update ; composer require "anahkiasen/former":"1.*@dev" --prefer-dist --no-update ; composer require "patricktalmadge/bootstrapper":"5.*@dev" --prefer-dist --no-update ; composer update',
+#		command => 'chdir /var/www/laravel ; composer require "way/generators":"3.*" --prefer-dist --no-update ; composer require "laravelbook/ardent":"2.*" --prefer-dist --no-update ; composer require "aws/aws-sdk-php-laravel":"1.*@dev" --prefer-dist --no-update ; composer require "anahkiasen/former":"1.*@dev" --prefer-dist --no-update ; composer require "patricktalmadge/bootstrapper":"5.*@dev" --prefer-dist --no-update ; composer update',
 #		require => Exec["laravel"],
 #		path => "/usr/local/bin"
 #	}
+
+	# Copy the "PHP info" file to Laravel directory
+	file { "/vagrant/laravel/public/vagrant-phpinfo.php":
+		notify => Service["apache2"],
+		mode => 644,
+		owner => "vagrant",
+		group => "vagrant",
+		require => Exec["laravel"],
+		source => "/vagrant/puppet/files/custom/vagrant-phpinfo.php",
+	}
 }
 
 include init
