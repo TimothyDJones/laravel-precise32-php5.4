@@ -104,6 +104,11 @@ The final portions of the Puppet provisioning configuration installs Composer an
 
 For more information on Puppet, check out their documentation at http://docs.puppetlabs.com/.
 
+### Checking the Installation
+After you have launched the Vagrant box by running `vagrant up`, you can check that the box is working by opening http://localhost:8080/vagrant-phpinfo.php on the **host** machine.  This should display a simple web page showing the basic Vagrant box configuration, such as the PHP and MySQL versions.  To check that Laravel was installed properly open http://localhost:8080/; the standard Laravel "You have arrived." page should be displayed.  Congratulations!
+
+For reference, this means that the Laravel `public` folder corresponds to the root or ("home") directory for the Apache web server on the Vagrant box.  (In other words the `vagrant-phpinfo.php` file is in the Laravel `public` folder.)  Thus, all Laravel URLs are based on this URL.
+
 ### XDebug Configuration
 The Vagrant configuration includes [XDebug](http://xdebug.org/), the *de facto* debugging standard for PHP.  Configuring [remote debugging using XDebug](http://xdebug.org/docs/remote) can be a little tricky, so here are some basic instructions on getting it going.  Basically, there are two steps in the process:  configuration on the Vagrant box and configuration on the host machine and the IDE on the host machine.
 
@@ -156,11 +161,6 @@ Now that we have everything set up for remote debugging on the Vagrant box (Reme
 ##### Other IDEs and Editors
 Here are some good references for using XDebug for remote debugging on your Vagrant box with other popular IDEs and Editors.
 * [How to configure Xdebug in PHP Storm through Vagrant](https://danemacmillan.com/how-to-configure-xdebug-in-phpstorm-through-vagrant/)
-
-### Checking the Installation
-After you have launched the Vagrant box by running `vagrant up`, you can check that the box is working by opening http://localhost:8080/ on the **host** machine.  The standard Laravel "You have arrived." page should be displayed.  Congratulations!
-
-For reference, this means that the Laravel `public` folder corresponds to the root or ("home") directory for the Apache web server on the Vagrant box.  Thus, all Laravel URLs are based on this URL.
 
 ### To Do
 The following additional features are planned:
