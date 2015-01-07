@@ -1,6 +1,6 @@
 class init {
 	exec { "apt-get-update":
-		command => "/usr/bin/apt-get update ; apt-get -f -y install"
+		command => "/usr/bin/sudo /usr/bin/apt-get update ; /usr/bin/sudo /usr/bin/apt-get -f -y install"
 	}
 	
 	package { [ "python-software-properties" ] :
@@ -10,7 +10,7 @@ class init {
 
 	# Add repository for PHP 5.4
 	exec { "php5-oldstable":
-		command => "/usr/bin/apt-add-repository ppa:ondrej/php5-oldstable -y ; /usr/bin/apt-get update",
+		command => "/usr/bin/sudo /usr/bin/apt-add-repository ppa:ondrej/php5-oldstable -y ; /usr/bin/sudo /usr/bin/apt-get update",
 		require => Package["python-software-properties"]
 	}
 
@@ -73,7 +73,7 @@ class init {
 	}
 	
 	exec { "composer":
-		command => "/usr/bin/curl -s https://getcomposer.org/installer | /usr/bin/php ; mv composer.phar /usr/local/bin/composer"
+		command => "/usr/bin/curl -s https://getcomposer.org/installer | /usr/bin/php ; sudo mv composer.phar /usr/local/bin/composer"
 	}
 	
 	exec { "laravel":
