@@ -82,10 +82,15 @@ class init {
 	}
 	
 #	exec { "laravel-packages":
-#		command => 'chdir /var/www/laravel ; composer require "way/generators":"3.*" --prefer-dist --no-update ; composer require "laravelbook/ardent":"2.*" --prefer-dist --no-update ; composer require "aws/aws-sdk-php-laravel":"1.*@dev" --prefer-dist --no-update ; composer require "anahkiasen/former":"1.*@dev" --prefer-dist --no-update ; composer require "patricktalmadge/bootstrapper":"5.*@dev" --prefer-dist --no-update ; composer update',
+#		command => 'chdir /vagrant/laravel ; composer require "way/generators":"3.*" --prefer-dist --no-update ; composer require "laravelbook/ardent":"2.*" --prefer-dist --no-update ; composer require "aws/aws-sdk-php-laravel":"1.*@dev" --prefer-dist --no-update ; composer require "anahkiasen/former":"1.*@dev" --prefer-dist --no-update ; composer require "patricktalmadge/bootstrapper":"5.*@dev" --prefer-dist --no-update ; composer update',
 #		require => Exec["laravel"],
 #		path => "/usr/local/bin"
 #	}
+#	Other candidate packages:
+#		"artdarek/oauth-4-laravel":"1.*"
+#		"fzaninotto/faker":"1.*"
+#		"mrjuliuss/syntara":"1.2.*"
+#		"bllim/datatables":"1.*"
 
 	# Copy the "PHP info" file to Laravel directory
 	file { "/vagrant/laravel/public/vagrant-phpinfo.php":
