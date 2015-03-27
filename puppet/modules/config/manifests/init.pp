@@ -1,7 +1,7 @@
 class config {
 
 	# Flag to determine if virtual machine packages should be upgraded.
-	$upgrade_packages = true
+	$upgrade_packages = false
 
 	# Database settings
 	$root_password = ""	# Leave 'root' password blank.  We set up PHPMyAdmin (later) to work with no 'root' password.  :)
