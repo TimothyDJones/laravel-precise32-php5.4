@@ -28,4 +28,10 @@ class apache {
 		require => Package["apache2"],
 		source => "${config::filepath}/apache/default",
 	}
+	
+	# Enable mod_rewrite
+	exec { "/usr/sbin/a2enmod rewrite":
+		notify => Service["apache2"],
+		require => Package["apache2"]
+	}	
 }
