@@ -34,11 +34,13 @@ if $config::phpmyadmin == true {
 }
 
 # Install Laravel and its dependencies, such as Composer.
-#if $config::composer == true {
-#	include composer
-#}
-#if $config::laravel == true {
-#	include laravel
-#}
+if $config::composer == true {
+	include composer
+	
+	if $config::laravel == true {
+		include laravel
+	}
+}
+
 
 #include default
