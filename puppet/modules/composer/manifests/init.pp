@@ -1,7 +1,7 @@
 class composer {
 	exec { "composer-install":
 		unless => "[ -f /usr/local/bin/composer ]",
-		require => Package["php5-cli"],
+		require => Package["php5-cli", "curl"],
 		command => "/usr/bin/curl -s https://getcomposer.org/installer | /usr/bin/php -- --install-dir=/usr/local/bin",
 	}
 	
