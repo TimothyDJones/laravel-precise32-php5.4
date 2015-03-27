@@ -9,12 +9,15 @@ class php54 {
 	# Add repository for PHP 5.4
 	exec { "php5-oldstable":
 		command => "/usr/bin/sudo /usr/bin/apt-add-repository ppa:ondrej/php5-oldstable -y ; /usr/bin/sudo /usr/bin/apt-get update",
-		require => Package["python-software-properties"]
+		require => [
+			Package["python-software-properties"],
+			Exec["apt-get-update"],
+		],
 	}
 	
 	# Update repository lists
-	exec { "php54-update":
-		require => Exec["apt-get-update"]
-	}	
+#	exec { "php54-update":
+#		require => Exec["apt-get-update"]
+#	}	
 
 }

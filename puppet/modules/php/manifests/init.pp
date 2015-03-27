@@ -23,6 +23,17 @@ class php {
 			]
 	}
 	
+	# Install XDebug if specified.
+	if $config::xdebug == true {
+		package {
+			"php5-xdebug":
+				ensure => present,
+				require => [
+					Exec["apt-get-update"],
+				],
+		}
+	}
+	
 	# Install 'extra' PHP packages specified by user, if any.
 	# TODO: This is a workaround due to problems with combining arrays.
 	package {

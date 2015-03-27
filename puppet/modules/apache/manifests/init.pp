@@ -16,7 +16,6 @@ class apache {
 			require => Package["apache2"],
 			subscribe => [
 				File["/etc/apache2/sites-available/default"],
-				File["/etc/php5/apache2/conf.d/20-xdebug.ini"],
 			],
 	}
 	
