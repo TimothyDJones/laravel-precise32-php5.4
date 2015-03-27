@@ -1,5 +1,8 @@
 class config {
 
+	# Flag to determine if virtual machine packages should be upgraded.
+	$upgrade_packages = true
+
 	# Database settings
 	$root_password = ""	# Leave 'root' password blank.  We set up PHPMyAdmin (later) to work with no 'root' password.  :)
 	$laravel_db_user = ""	# Specify user name for 'laravel' database.  If not specified, will use 'root'.
@@ -17,7 +20,7 @@ class config {
 	
 	# PHP settings
 	$extra_php_packages = [
-		
+		"php5-sqlite",
 	]
 	
 	# Include any additional packages that you'd like to install.

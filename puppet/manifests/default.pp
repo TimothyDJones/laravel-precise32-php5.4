@@ -8,8 +8,7 @@ Exec {
 	exec { "apt-get-update":
 		command => "/usr/bin/sudo /usr/bin/apt-get update ; /usr/bin/sudo /usr/bin/apt-get -f -y install"
 	}
-
-
+	
 # Load settings (configuration parameters) from file ('config.pp' in same directory as this file).
 include config
 
@@ -20,6 +19,7 @@ include addons
 if $config::php_version == "5.4" {
 	include php54	# Specific process to add PHP 5.4 third-party repository.
 }
+
 if $config::php_version == "5.5" {
 	include php55	# Or use third-party repository for PHP 5.5.
 }
@@ -34,11 +34,11 @@ if $config::phpmyadmin == true {
 }
 
 # Install Laravel and its dependencies, such as Composer.
-if $config::composer == true {
-	include composer
-}
-if $config::laravel == true {
-	include laravel
-}
+#if $config::composer == true {
+#	include composer
+#}
+#if $config::laravel == true {
+#	include laravel
+#}
 
-include default
+#include default
