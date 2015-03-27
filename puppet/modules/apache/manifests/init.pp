@@ -28,6 +28,5 @@ class apache {
 		group => "root",
 		require => Package["apache2"],
 		source => "${config::filepath}/apache/default",
-		target => "/etc/apache2/sites-available/default",
 	}
 }

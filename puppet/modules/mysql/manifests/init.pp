@@ -24,7 +24,6 @@ class mysql {
 		group => "root",
 		require => Package["mysql-server"],
 		source => "${config::filepath}/mysql/my.cnf",
-		target => "/etc/mysql/my.cnf",
 	}
 	
 	# Set 'root' password for MySQL to blank (null/empty).

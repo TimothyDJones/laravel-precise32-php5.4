@@ -25,7 +25,6 @@ class phpmyadmin {
 			group => root,
 			notify => Service["apache2"],
 			source => "${config::filepath}/phpmyadmin/config.inc.php",
-			target => "/etc/phpmyadmin/config.inc.php",
 			require => [
 				Package["phpmyadmin"],
 				Package["apache2"],

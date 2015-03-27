@@ -16,6 +16,5 @@ class xdebug {
 		group => "root",
 		require => [Package["apache2"], Service["apache2"] ],
 		source => "${config::filepath}/custom/20-xdebug.ini",
-		target => "/etc/php5/apache2/conf.d/20-xdebug.ini",
 	}
 }
