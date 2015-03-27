@@ -29,6 +29,12 @@ class addons {
 			require => Exec["apt-get-update"]
 	}
 	
+	package {
+		"git-core":
+			ensure => present,
+			require => Exec["apt-get-update"]
+	}
+	
 	# Install any additional packages specified by user in 'config.pp'.
 	package {
 		$config::extra_packages:
