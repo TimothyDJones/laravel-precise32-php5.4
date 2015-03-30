@@ -1,7 +1,7 @@
 class config {
 
 	# Flag to determine if virtual machine packages should be upgraded.
-	$upgrade_packages = false
+	$upgrade_packages = true
 
 	# Database settings
 	$root_password = ""	# Leave 'root' password blank.  We set up PHPMyAdmin (later) to work with no 'root' password.  :)
@@ -9,7 +9,7 @@ class config {
 	$laravel_db_pw = ""	# Specify the password to use for 'laravel' database, if desired.
 	
 	# Installation flags
-	$phpmyadmin = true	# PHPMyAdmin - http://phpmyadmin.net/
+	$phpmyadmin = false	# PHPMyAdmin - http://phpmyadmin.net/
 	$xdebug = true		# PHP XDebug module - http://xdebug.org/
 	$composer = true	# PHP Composer utility - http://getcomposer.org/
 	$laravel = true		# Laravel framework - http://laravel.com/
