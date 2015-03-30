@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'time'
+
 Vagrant.configure("2") do |config|
 	# All Vagrant configuration is done here. The most common configuration
 	# options are documented and commented below. For a complete reference,
@@ -93,14 +95,20 @@ Vagrant.configure("2") do |config|
 	#   puppet.manifest_file  = "init.pp"
 	# end
 	
+	# Set timezone of virtual machine to timezone of local machine.
+	timezone = 'Etc/GMT' + ((Time.zone_offset(Time.now.zone)/60)/60).to_s
+	config.vm.provision :shell, :inline => "if [ $(grep -c UTC /etc/timezone) -gt 0 ]; then echo \"#{timezone}\" | sudo tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata; fi"
+	
 	# Update files on virtual machine
-	config.vm.provision :shell, :inline => "sudo apt-get update -y && sudo apt-get upgrade -y"
+	#config.vm.provision :shell, :inline => "sudo apt-mark hold grub-pc"  # Mark grub bootloader to not be upgraded.
+	#config.vm.provision :shell, :inline => "sudo apt-get update -y && sudo apt-get upgrade -y"
 
 	config.vm.provision :puppet do |puppet|
+		puppet.facter = { "fqdn" => config.vm.hostname }
 		puppet.manifests_path = "puppet/manifests"
 		puppet.manifest_file  = "default.pp"
 		puppet.module_path    = "puppet/modules"
-		#puppet.options       = "--verbose --debug"
+		puppet.options       = "--verbose --debug"
 	end
 
 	# Enable provisioning with chef solo, specifying a cookbooks path, roles
