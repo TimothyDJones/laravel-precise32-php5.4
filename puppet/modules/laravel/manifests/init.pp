@@ -41,6 +41,12 @@ class laravel {
 		logoutput => true,
 	}
 	
+	# Add 'vagrant' user to 'www-data' group to allow writing to Laravel 'app/storage' and 'public' directories.
+	exec { "add-vagrant-www-data":
+		require => Exec["create-laravel-project"],
+		command => "/bin/sh -c '/usr/sbin/usermod -a -G www-data vagrant'",
+	}
+	
 	# Set "full write" permissions on Laravel storage directory.
 	file {
 		"/vagrant/laravel/app/storage":
