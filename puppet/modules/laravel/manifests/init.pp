@@ -23,8 +23,20 @@ class laravel {
 			Exec["add-laravel-installer"],
 		],
 		#command => "/bin/bash -c 'cd /vagrant/ && shopt -s dotglob nullglob; composer create-project laravel/laravel temp --prefer-dist ${config::laravel_version}.* && mv temp laravel'",
-		command => "/bin/bash -c 'cd /vagrant/ ; composer create-project laravel/laravel temp --prefer-dist ${config::laravel_version}.* && mv temp laravel'",  # Do *NOT* use Composer global options if installing specific version of Laravel.
+		command => "/bin/bash -c 'cd /vagrant/ ; composer create-project laravel/laravel temp --prefer-dist ${config::laravel_version}.* ; sudo cp -rfp temp/* ./laravel ; sudo rm -rf temp'",  # Do *NOT* use Composer global options if installing specific version of Laravel.
 		creates => "/vagrant/laravel/composer.json",
+		timeout => 1800,
+		logoutput => true,
+	}
+	
+	exec { "update-laravel-packages":
+		require => [
+			Package["git-core", "php5", "php5-cli"],
+			Exec["create-laravel-project"],
+		],
+		onlyif => [ "test -f /vagrant/laravel/composer.json", "test -d /vagrant/laravel/vendor" ],
+		command => "/bin/sh -c 'cd /vagrant/laravel && sudo composer update --verbose --prefer-dist'",
+		creates => "/var/www/vendor/autoload.php",
 		timeout => 1800,
 		logoutput => true,
 	}
@@ -32,7 +44,7 @@ class laravel {
 	# Set "full write" permissions on Laravel storage directory.
 	file {
 		"/vagrant/laravel/app/storage":
-			require => Exec["create-laravel-project"],
+			require => Exec["update-laravel-packages"],
 			mode => 777,
 			owner => "www-data",
 			group => "www-data",
@@ -41,7 +53,7 @@ class laravel {
 	# Change ownership of Laravel public directory.
 	file {
 		"/vagrant/laravel/public":
-			require => Exec["create-laravel-project"],
+			require => Exec["update-laravel-packages"],
 			mode => 644,
 			owner => "www-data",
 			group => "www-data",			
@@ -54,7 +66,7 @@ class laravel {
 		mode => 644,
 		owner => "www-data",
 		group => "www-data",
-		require => Exec["create-laravel-project"],
+		require => Exec["update-laravel-packages"],
 		source => "${config::filepath}/custom/vagrant-phpinfo.php",
 	}
 }
