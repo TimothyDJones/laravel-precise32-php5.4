@@ -4,11 +4,6 @@ Exec {
 	path => ["/usr/bin", "/bin", "/usr/sbin", "/usr/local/bin", "/usr/local/sbin"]
 }
 
-# Update repository lists on virtual machine
-	exec { "apt-get-update":
-		command => "/usr/bin/sudo /usr/bin/apt-get update ; /usr/bin/sudo /usr/bin/apt-get -f -y install"
-	}
-	
 # Load settings (configuration parameters) from file ('config.pp' in same directory as this file).
 include config
 
