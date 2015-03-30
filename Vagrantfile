@@ -92,6 +92,9 @@ Vagrant.configure("2") do |config|
 	#   puppet.manifests_path = "manifests"
 	#   puppet.manifest_file  = "init.pp"
 	# end
+	
+	# Update files on virtual machine
+	config.vm.provision :shell, :inline => "sudo apt-get update -y && sudo apt-get upgrade -y"
 
 	config.vm.provision :puppet do |puppet|
 		puppet.manifests_path = "puppet/manifests"
