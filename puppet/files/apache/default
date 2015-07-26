@@ -5,6 +5,7 @@
                 AllowOverride All
                 Order allow,deny
                 allow from all
+                Require all granted     # New directive required for Apache 2.4.3 and later
         </Directory>
 
         ErrorLog ${APACHE_LOG_DIR}/error.log
